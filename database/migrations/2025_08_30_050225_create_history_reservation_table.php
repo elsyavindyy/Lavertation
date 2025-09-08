@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // foreign key
             $table->string('reason_for_reservation');
             $table->date('reservation_date'); // same as reservations
-            $table->timestamp('time_start');
-            $table->timestamp('time_finish');
+            $table->dateTime('time_start');
+            $table->dateTime('time_finish');
             $table->string('floor');
-            $table->timestamp('archived_at')->useCurrent(); // when moved to history
+            $table->dateTime('archived_at')->default(now()); // when moved to history
             $table->timestamps(); // created_at & updated_at
 
             // Foreign key

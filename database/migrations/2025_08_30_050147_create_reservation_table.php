@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // foreign key
             $table->string('reason_for_reservation');
             $table->date('reservation_date'); // ✅ date of reservation
-            $table->timestamp('time_start');
-            $table->timestamp('time_finish');
+            $table->dateTime('time_start');
+            $table->dateTime('time_finish');
             $table->string('floor');
             $table->timestamps(); // created_at & updated_at
 

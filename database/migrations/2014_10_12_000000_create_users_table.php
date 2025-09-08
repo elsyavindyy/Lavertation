@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password'); // store hash (Laravel will hash on save)
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->string('role')->default('user'); // default role
+            $table->rememberToken();
             $table->timestamps();
         });
     }
