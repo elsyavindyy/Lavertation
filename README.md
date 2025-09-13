@@ -1,4 +1,4 @@
-Lavertation
+## Lavertation
 
 Aplikasi Lab Reservation digunakan agar guru-guru yang ingin menggunakan lab sekolah secara bersamaan dapat mereservasi waktu pemakaian lab terlebih dahulu supaya tidak terjadi bentrokan jadwal pemakaian lab sekolah.
 
@@ -20,6 +20,13 @@ Ini tentunya menyelesaikan masalah dimana guru-guru yang membutuhkan lab perlu m
 - Tailwind CSS
 - MySQL
 - Blade
+---
+## Dokumentasi
+<img src="images/login.png" alt="Dashboard" width="500">
+<img src="images/loginnama.png" alt="Dashboard" width="500">
+<img src="images/register.png" alt="Dashboard" width="500">
+<img src="images/homepageatas.png" alt="Dashboard" width="500">
+<img src="images/homepagebawah.png" alt="Dashboard" width="500">
 
 ---
 ## 🛠️ Instalasi
