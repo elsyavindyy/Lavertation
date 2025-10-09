@@ -7,65 +7,84 @@ use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
-    // Lihat semua reservasi
+    // 🔹 Tampilkan semua data reservasi
     public function index()
     {
-        $reservations = Reservation::with(['user', 'lab'])->get();
-        return response()->json($reservations);
+        $reservations = Reservation::all();
+        return view('reservations.index', compact('reservations'));
     }
 
-    // Simpan reservasi baru
+    // 🔹 Form tambah reservasi baru
+    public function create()
+    {
+        return view('reservations.create');
+    }
+
+    // 🔹 Simpan data baru ke database
     public function store(Request $request)
     {
         $request->validate([
-            'user_id'    => 'required|exists:users,id',
-            'lab_id'     => 'required|exists:labs,id',
-            'date'       => 'required|date',
-            'start_time' => 'required',
-            'end_time'   => 'required',
+            'user_id' => 'required|numeric',
+            'reason_for_reservation' => 'required|string|max:255',
+            'reservation_date' => 'required|date',
+            'time_start' => 'required',
+            'time_finish' => 'required',
+            'floor' => 'required|string|max:50',
         ]);
 
-        $reservation = Reservation::create([
-            'user_id'    => $request->user_id,
-            'lab_id'     => $request->lab_id,
-            'date'       => $request->date,
-            'start_time' => $request->start_time,
-            'end_time'   => $request->end_time,
-            'status'     => 'pending',
+        Reservation::create([
+            'user_id' => $request->user_id,
+            'reason_for_reservation' => $request->reason_for_reservation,
+            'reservation_date' => $request->reservation_date,
+            'time_start' => $request->time_start,
+            'time_finish' => $request->time_finish,
+            'floor' => $request->floor,
+            'status' => 'pending', // default saat dibuat
         ]);
 
-        return response()->json([
-            'message' => 'Reservasi berhasil dibuat',
-            'data'    => $reservation,
-        ], 201);
+        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil ditambahkan!');
     }
 
-    // Update status (misalnya admin approve/reject)
+    // 🔹 Form edit data
+    public function edit($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        return view('reservations.edit', compact('reservation'));
+    }
+
+    // 🔹 Update data di database
     public function update(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected',
+            'user_id' => 'required|numeric',
+            'reason_for_reservation' => 'required|string|max:255',
+            'reservation_date' => 'required|date',
+            'time_start' => 'required',
+            'time_finish' => 'required',
+            'floor' => 'required|string|max:50',
+            'status' => 'required|in:pending,approved,rejected',
         ]);
 
         $reservation = Reservation::findOrFail($id);
         $reservation->update([
+            'user_id' => $request->user_id,
+            'reason_for_reservation' => $request->reason_for_reservation,
+            'reservation_date' => $request->reservation_date,
+            'time_start' => $request->time_start,
+            'time_finish' => $request->time_finish,
+            'floor' => $request->floor,
             'status' => $request->status,
         ]);
 
-        return response()->json([
-            'message' => 'Status reservasi diperbarui',
-            'data'    => $reservation,
-        ]);
+        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil diperbarui!');
     }
 
-
-
-    // Hapus reservasi
+    // 🔹 Hapus data reservasi
     public function destroy($id)
     {
         $reservation = Reservation::findOrFail($id);
         $reservation->delete();
 
-        return response()->json(['message' => 'Reservasi dihapus']);
+        return redirect()->route('reservations.index')->with('success', 'Reservasi berhasil dihapus!');
     }
 }
