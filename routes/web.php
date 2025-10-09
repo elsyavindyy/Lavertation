@@ -1,28 +1,30 @@
 <?php
+
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\ReservationController;
-
-
-Route::get('/labs', [LabController::class, 'index']);
-Route::get('/labs/{id}', [LabController::class, 'show']);
-
-Route::get('/reservations', [ReservationController::class, 'index']);
-Route::post('/reservations', [ReservationController::class, 'store']);
-Route::put('/reservations/{id}', [ReservationController::class, 'update']);
-Route::delete('/reservations/{id}', [ReservationController::class, 'destroy']);
-
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::get('/', function () {
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+Route::get('/welcome', function () {
     return view('welcome');
+})->middleware('auth')->name('welcome');
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// Public labs
+Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
+Route::get('/labs/{id}', [LabController::class, 'show'])->name('labs.show');
+
+// Reservations (hanya login user)
+Route::middleware('auth')->group(function () {
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::put('/reservations/{id}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::resource('reservations', ReservationController::class);
 
 require __DIR__.'/auth.php';
