@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl">
         <h2 class="text-[32px] font-bold mb-6 text-center">Reservation Form</h2>
 
         {{-- Pesan sukses --}}
@@ -25,7 +25,8 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('reservations.store') }}" class="space-y-5">
+        {{-- Form Reservasi --}}
+        <form method="POST" action="{{ route('reservations.store') }}" class="space-y-5 mb-10">
             @csrf
 
             {{-- Floor --}}
@@ -41,30 +42,24 @@
             </div>
 
             {{-- Reason --}}
-           <div class="mb-4">
+            <div>
                 <label for="reason_for_reservation" class="block font-semibold mb-1">Reason for Reservation</label>
                 <textarea id="reason_for_reservation" name="reason_for_reservation"
                     placeholder="Explain your reason for reservation..."
                     class="w-full border rounded-lg p-2.5 bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-11"
                     required>{{ old('reason_for_reservation') }}</textarea>
-                @error('reason_for_reservation')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
-            {{-- Reservation Date --}}
-            <div class="mb-4">
+            {{-- Date --}}
+            <div>
                 <label for="reservation_date" class="block text-sm font-semibold mb-2">Reservation Date</label>
                 <input type="date" id="reservation_date" name="reservation_date"
                     value="{{ old('reservation_date') }}"
                     class="w-full border rounded-lg p-2.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                @error('reservation_date')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
-            {{-- Time Start & Finish --}}
-            <div class="grid grid-cols-2 gap-4 mb-6">
+            {{-- Time --}}
+            <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold mb-2">Start Time</label>
                     <input type="time" name="time_start" value="{{ old('time_start') }}"
@@ -85,6 +80,42 @@
                 </button>
             </div>
         </form>
+
+        {{-- Daftar Reservasi Pengguna --}}
+        <h3 class="text-xl font-bold mb-4">Your Reservations</h3>
+        @if($userReservations->count())
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200 text-left">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Floor</th>
+                        <th class="p-2">Start</th>
+                        <th class="p-2">Finish</th>
+                        <th class="p-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($userReservations as $reservation)
+                        <tr class="border-b">
+                            <td class="p-2">{{ $reservation->reservation_date }}</td>
+                            <td class="p-2">{{ $reservation->floor }}</td>
+                            <td class="p-2">{{ $reservation->time_start }}</td>
+                            <td class="p-2">{{ $reservation->time_finish }}</td>
+                            <td class="p-2 font-semibold 
+                                {{ $reservation->status === 'approved' ? 'text-green-600' : 'text-yellow-600' }}">
+                                {{ ucfirst($reservation->status) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                {{ $userReservations->links() }}
+            </div>
+        @else
+            <p class="text-gray-500 text-center">You have no reservations yet.</p>
+        @endif
 
         <div class="mt-6 text-center">
             <a href="{{ route('dashboard') }}" class="text-[#FFA100] font-semibold hover:underline">

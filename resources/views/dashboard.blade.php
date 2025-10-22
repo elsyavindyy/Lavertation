@@ -16,7 +16,7 @@
             {{-- ======================================================= --}}
             {{-- PERUBAHAN DI SINI: Menggunakan 'username' --}}
             {{-- ======================================================= --}}
-            <span class="font-medium">Hi, {{ Auth::user()->username }}</span>
+            <span class="font-medium">Hi, {{ Auth::user()->name }}</span>
             {{-- ======================================================= --}}
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

@@ -47,8 +47,7 @@ Route::middleware('auth')->group(function () {
     // LABS
     Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
     Route::get('/labs/{id}', [LabController::class, 'show'])->name('labs.show');
-
-    // RESERVATIONS - Menggunakan Route Resource agar lebih bersih
-    Route::resource('reservations', ReservationController::class);
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     
 });
