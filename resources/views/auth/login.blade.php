@@ -28,12 +28,12 @@
         <form method="POST" action="{{ route('login.submit') }}">
             @csrf
 
-            {{-- Email --}}
+            {{-- Username --}}
             <div class="mb-4">
-                <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
+                <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus
                     class="w-full px-3 py-2 border rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                @error('email')
+                @error('username')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -48,7 +48,7 @@
                 @enderror
             </div>
 
-            {{-- Tombol --}}
+            {{-- Tombol Login --}}
             <div>
                 <button type="submit" 
                     class="w-full bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition">
@@ -57,9 +57,10 @@
             </div>
         </form>
 
+        {{-- Link ke Register --}}
         <p class="text-center text-sm mt-4">
             Don’t have an account? 
-            <a  class="text-[#FFA100] hover:underline">Register</a>
+            <a href="{{ route('register') }}" class="text-[#FFA100] font-semibold hover:underline">Register</a>
         </p>
     </div>
 

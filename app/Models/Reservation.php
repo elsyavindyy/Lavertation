@@ -9,24 +9,31 @@ class Reservation extends Model
 {
     use HasFactory;
 
+    /**
+     * Atribut yang boleh diisi.
+     */
     protected $fillable = [
         'user_id',
-        'lab_id',
-        'date',
-        'start_time',
-        'end_time',
+        'reason_for_reservation',
+        'reservation_date',
+        'time_start',
+        'time_finish',
+        'floor',
         'status',
     ];
 
-    // Relasi ke User
+    /**
+     * Casting tipe data.
+     */
+    protected $casts = [
+        'reservation_date' => 'date',
+        'time_start' => 'datetime',
+        'time_finish' => 'datetime',
+    ];
+
+  
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    // Relasi ke Lab
-    public function lab()
-    {
-        return $this->belongsTo(Lab::class);
+        return $this->belongsTo(User::class);
     }
 }

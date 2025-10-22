@@ -2,24 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // jangan lupa import DB
+use App\Models\Reservation;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index()
+    
+    public function index(Request $request)
     {
-        $reservations = DB::table('reservations')
-            ->join('users', 'reservations.user_id', '=', 'users.id') // sesuaikan foreign key
-            ->select(
-                'reservations.*',
-                'users.name as username'
-            )
-            ->orderBy('reservations.created_at', 'desc') // urut dari terbaru
-            ->limit(3) // ambil 3 data terakhir
-            ->get(); // ambil semua reservations
+        //Tentukan tanggal yang akan ditampilkan.
+        $currentDate = $request->has('date') ? Carbon::parse($request->date) : Carbon::today();
 
-        return view('dashboard', compact('reservations'));
+        //Ambil data reservasi dari database
+        $reservations = Reservation::with('user') 
+                                   ->whereDate('reservation_date', $currentDate) 
+                                   ->where('status', 'approved') 
+                                   ->orderBy('time_start', 'asc') 
+                                   ->get();
+
+        //Siapkan tanggal untuk tombol navigasi "sebelumnya" dan "berikutnya"
+        $previousDate = $currentDate->copy()->subDay()->toDateString();
+        $nextDate = $currentDate->copy()->addDay()->toDateString();
+
+        //Kirim semua data yang diperlukan ke view
+        return view('dashboard', [
+            'reservations' => $reservations,
+            'currentDate' => $currentDate,
+            'previousDate' => $previousDate,
+            'nextDate' => $nextDate,
+        ]);
     }
 }
