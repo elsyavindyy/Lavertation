@@ -7,19 +7,20 @@ use App\Http\Controllers\LabController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\SettingsController; // Pastikan import ini ada!
 
 // ====================
 // REDIRECT UTAMA
 // ====================
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('dashboard'); // Sudah login → dashboard
+        return redirect()->route('dashboard');
     }
-    return redirect()->route('login'); // Belum login → ke login
+    return redirect()->route('login');
 });
 
 // ====================
-// AUTH ROUTES
+// AUTH ROUTES (GUEST ONLY)
 // ====================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -31,10 +32,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Dummy profile route
-Route::get('/profile', function () {
-    return view('profile');
-})->middleware('auth')->name('profile.edit');
 
 // ====================
 // PROTECTED ROUTES (AUTH ONLY)
@@ -44,6 +41,18 @@ Route::middleware('auth')->group(function () {
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // PROFILE (Menggunakan closure sementara untuk menghindari error controller)
+    Route::get('/profile', function () {
+        // Ganti 'profile.index' dengan nama view Profile Anda yang benar
+        return view('profile.index'); 
+    })->name('profile.show');
+
+    // SETTINGS (ROUTE UNTUK MENGHILANGKAN ERROR settings.index)
+    Route::get('/settings', function () {
+        // Ganti 'settings.index' dengan nama view Settings Anda yang benar
+        return view('settings.index'); 
+    })->name('settings.index');
+    
     // LABS
     Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
     Route::get('/labs/{id}', [LabController::class, 'show'])->name('labs.show');

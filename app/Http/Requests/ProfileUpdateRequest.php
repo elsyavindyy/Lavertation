@@ -15,15 +15,31 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Mendapatkan ID pengguna yang sedang login untuk mengabaikan dirinya sendiri
+        $userId = $this->user()->id; 
+        
         return [
+            // 1. Validasi Kolom 'name' (Nama Lengkap)
             'name' => ['required', 'string', 'max:255'],
+            
+            // 2. Validasi Kolom 'username' (PENTING: Pastikan ini ada di tabel 'users')
+            'username' => [
+                'required', 
+                'string', 
+                'max:255', 
+                // Memastikan username unik, kecuali untuk pengguna ini
+                Rule::unique(User::class)->ignore($userId),
+            ],
+            
+            // 3. Validasi Kolom 'email'
             'email' => [
                 'required',
                 'string',
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                // Memastikan email unik, kecuali untuk pengguna ini
+                Rule::unique(User::class)->ignore($userId),
             ],
         ];
     }

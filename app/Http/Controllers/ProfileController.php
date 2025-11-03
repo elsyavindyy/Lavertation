@@ -1,60 +1,44 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Requests;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class ProfileController extends Controller
+class ProfileUpdateRequest extends FormRequest
 {
     /**
-     * Display the user's profile form.
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function edit(Request $request): View
+    public function rules(): array
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        // Mendapatkan ID pengguna yang sedang login untuk mengabaikan dirinya sendiri
+        $userId = $this->username()->id; 
+        
+        return [
+            // Kolom 'name' dan 'username'
+            'name' => ['required', 'string', 'max:255'],
+            'username' => [
+                'required', 
+                'string', 
+                'max:255', 
+                // Memastikan username unik, kecuali untuk pengguna ini
+                Rule::unique(User::class)->ignore($userId),
+            ],
+            
+            // Kolom 'email'
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                // Memastikan email unik, kecuali untuk pengguna ini
+                Rule::unique(User::class)->ignore($userId),
+            ],
+        ];
     }
 }
