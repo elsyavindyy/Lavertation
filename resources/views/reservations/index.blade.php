@@ -52,9 +52,9 @@
 
             {{-- Date --}}
             <div>
-                <label for="reservation_date" class="block text-sm font-semibold mb-2">Reservation Date</label>
-                <input type="date" id="reservation_date" name="reservation_date"
-                    value="{{ old('reservation_date') }}"
+                <label for="date" class="block text-sm font-semibold mb-2">Reservation Date</label>
+                <input type="date" id="date" name="reservation_date"
+                    value="{{ old('date') }}"
                     class="w-full border rounded-lg p-2.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
             </div>
 
@@ -97,7 +97,7 @@
                 <tbody>
                     @foreach($userReservations as $reservation)
                         <tr class="border-b">
-                            <td class="p-2">{{ $reservation->reservation_date }}</td>
+                            <td class="p-2">{{ $reservation->date }}</td>
                             <td class="p-2">{{ $reservation->floor }}</td>
                             <td class="p-2">{{ $reservation->time_start }}</td>
                             <td class="p-2">{{ $reservation->time_finish }}</td>

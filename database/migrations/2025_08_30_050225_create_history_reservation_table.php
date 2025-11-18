@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id'); // foreign key
             $table->string('reason_for_reservation');
-            $table->date('reservation_date'); // same as reservations
+            $table->date('date'); // same as reservations
             $table->dateTime('time_start');
             $table->dateTime('time_finish');
             $table->string('floor');

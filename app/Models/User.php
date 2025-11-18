@@ -17,8 +17,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-      protected $fillable = [
-        'name',
+     protected $fillable = [
+        'username',
         'email',
         'password',
     ];
@@ -46,11 +46,26 @@ class User extends Authenticatable
         ];
     }
 
+    // ================================================================
+    // TAMBAHKAN FUNGSI INI
+    // ================================================================
+    /**
+     * Memberitahu Laravel untuk menggunakan kolom 'username'
+     * saat proses otentikasi (login).
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'username';
+    }
+    // ================================================================
+
     /**
      * Relasi ke reservations
      */
     public function reservations()
     {
-        return $this->hasMany(\App\Models\Reservation::class);
+        return $this->hasMany(Reservation::class); // <-- Perbaiki pemanggilan relasi
     }
 }

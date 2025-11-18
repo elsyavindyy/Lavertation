@@ -14,8 +14,8 @@ class Reservation extends Model
      */
     protected $fillable = [
         'user_id',
-        'reason_for_reservation',
-        'reservation_date',
+        'reason',
+        'date',
         'time_start',
         'time_finish',
         'floor',
@@ -26,7 +26,7 @@ class Reservation extends Model
      * Casting tipe data.
      */
     protected $casts = [
-        'reservation_date' => 'date',
+        'date' => 'date',
         'time_start' => 'datetime',
         'time_finish' => 'datetime',
     ];

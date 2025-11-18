@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('name');
             $table->string('floor');
             $table->text('reason')->nullable();
             $table->date('date');
             $table->time('time_start');
             $table->time('time_finish');
-            $table->string('status')->default('pending');
+            // $table->string('status')->default('pending');
             $table->timestamps();
         });
 

@@ -26,7 +26,7 @@
             <td>{{ $r->id }}</td>
             <td>{{ $r->user_id }}</td>
             <td>{{ $r->reason_for_reservation }}</td>
-            <td>{{ $r->reservation_date }}</td>
+            <td>{{ $r->date }}</td>
             <td>{{ $r->time_start }}</td>
             <td>{{ $r->time_finish }}</td>
             <td>{{ $r->floor }}</td>

@@ -12,18 +12,24 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    /**
+     * Menangani permintaan login (HANYA USERNAME)
+     */
     public function login(Request $request)
     {
+        // 1. Validasi dikembalikan ke 'username'
         $credentials = $request->validate([
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
+        // 2. Coba otentikasi menggunakan 'username'
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard'); // ganti sesuai halaman setelah login
+            return redirect()->intended('/dashboard');
         }
 
+        // 3. Jika gagal, kembalikan error ke field 'username'
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->onlyInput('username');
@@ -38,4 +44,3 @@ class LoginController extends Controller
         return redirect('/login');
     }
 }
-    

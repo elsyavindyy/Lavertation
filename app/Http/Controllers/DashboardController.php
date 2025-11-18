@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
         //Ambil data reservasi dari database
         $reservations = Reservation::with('user') 
-                                   ->whereDate('reservation_date', $currentDate) 
+                                   ->whereDate('date', $currentDate) 
                                    ->where('status', 'approved') 
                                    ->orderBy('time_start', 'asc') 
                                    ->get();
