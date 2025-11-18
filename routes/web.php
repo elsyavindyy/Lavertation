@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Admin;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LabController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\HistoryReservationController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\SettingsController; // Pastikan import ini ada!
+use App\Http\Controllers\Auth\RegisteredUserController; 
+use App\Http\Controllers\Admin\ReservationsController;
+
 
 // ====================
 // REDIRECT UTAMA
@@ -19,6 +21,12 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');
+    Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('admin.reservations.show');
+    Route::post('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('admin.reservations.updateStatus');
+});
 // ====================
 // AUTH ROUTES (GUEST ONLY)
 // ====================
@@ -52,7 +60,8 @@ Route::middleware('auth')->group(function () {
         // Ganti 'settings.index' dengan nama view Settings Anda yang benar
         return view('settings.index'); 
     })->name('settings.index');
-    
+    Route::get('/history-reservations', [HistoryReservationController::class, 'index'])->name('history.index');
+    Route::get('/history-reservations/{id}', [HistoryReservationController::class, 'show'])->name('history.show');
     // LABS
     Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
     Route::get('/labs/{id}', [LabController::class, 'show'])->name('labs.show');
