@@ -9,9 +9,8 @@ Ini tentunya menyelesaikan masalah dimana guru-guru yang membutuhkan lab perlu m
 ## Fitur
 - Login & Register dengan autentikasi
 - Dashboard dengan jadwal hari ini
-- Slideshow gambar
-- Explore menu (Booked, Notifications, Settings, Profile)
-- Pembaruan status dengan pengguna mendapatkan notifikasi
+- Explore menu (History, Notifications)
+- Pembaruan status(Pending, Accepted, Rejected) dengan pengguna mendapatkan notifikasi
 - Pembaruan jadwal yang otomatis
 
 ---
