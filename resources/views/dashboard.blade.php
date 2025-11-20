@@ -42,7 +42,9 @@
 
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container mx-auto px-8 flex justify-between items-center py-6">
-            <div class="font-playfair text-3xl font-bold tracking-wider">Lavertation</div>
+           <a href="{{ route('dashboard') }}" class="font-playfair text-3xl font-bold tracking-wider hover:text-blue-900 transition duration-300 cursor-pointer">
+                Lavertation
+            </a>
             
             <nav class="hidden md:flex items-center space-x-10">
                 <a href="#" class="nav-link active font-semibold text-gray-900">Home</a>
@@ -112,7 +114,13 @@
                 </button>
                 <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
                     
+                    <a href="{{ route('booked-history.index') }}" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        History
+                    </a>
 
+                    {{-- Garis Pemisah sebelum Logout --}}
+                    <div class="border-t border-gray-100 my-1"></div>
+                    
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
