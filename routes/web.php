@@ -42,12 +42,6 @@ Route::middleware('auth')->group(function () {
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // // PROFILE (Menggunakan closure sementara untuk menghindari error controller)
-    // Route::get('/profile', function () {
-    //     // Ganti 'profile.index' dengan nama view Profile Anda yang benar
-    //     return view('profile.index'); 
-    // })->name('profile.show');
-
     // SETTINGS (ROUTE UNTUK MENGHILANGKAN ERROR settings.index)
     Route::get('/settings', function () {
         return view('settings.index'); 
