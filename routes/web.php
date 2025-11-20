@@ -7,15 +7,16 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\HistoryReservationController;
 use App\Http\Controllers\DashboardController;
-<<<<<<< HEAD
-use App\Http\Controllers\Auth\RegisteredUserController; 
 use App\Http\Controllers\Admin\ReservationsController;
-
-=======
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\HistoryController;
->>>>>>> 693eaeb40fe3956729febf24f794ff0b10c3a7c7
+use App\Http\Controllers\Admin\UserController;
+
+Route::prefix('admin')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+});
 
 // ====================
 // REDIRECT UTAMA
