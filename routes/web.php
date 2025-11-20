@@ -13,11 +13,6 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\Admin\UserController;
 
-Route::prefix('admin')->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-});
-
 // ====================
 // REDIRECT UTAMA
 // ====================
@@ -28,11 +23,15 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
+// ====================
+// ADMIN ROUTES
+// ====================
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.reservations.index');
     Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('admin.reservations.show');
     Route::post('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])->name('admin.reservations.updateStatus');
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 // ====================
 // AUTH ROUTES (GUEST ONLY)

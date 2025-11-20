@@ -10,32 +10,26 @@ class UserController extends Controller
     // Menampilkan semua user
     public function index()
     {
-        $users = User::select('id', 'name', 'email', 'created_at')->get();
+        $users = User::all();
 
-        return response()->json([
-            'success' => true,
-            'count' => $users->count(),
-            'data' => $users
-        ]);
+        return view('admin.users.index', compact('users'));
     }
 
-    // Menampilkan detail satu user
-    public function show($id)
+    // Hapus user
+    public function destroy($id)
     {
-        $user = User::select('id', 'name', 'email', 'created_at')
-                     ->where('id', $id)
-                     ->first();
+        $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 404);
+            return redirect()
+                ->route('admin.users.index')
+                ->with('error', 'User tidak ditemukan.');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => $user
-        ]);
+        $user->delete();
+
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'User berhasil dihapus.');
     }
 }
