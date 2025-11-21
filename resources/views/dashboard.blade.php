@@ -58,6 +58,11 @@
  
             {{-- START: WRAPPER UTAMA UNTUK ICON & USER --}}
 <div class="relative flex items-center space-x-6">
+
+    {{-- 1. HISTORY ICON (BARU) --}}
+                <a href="{{ route('booked-history.index') }}" class="text-gray-600 hover:text-[#273875] transition duration-300" title="Booking History">
+                    <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+                </a>
  
     {{-- START: NOTIFICATION DROPDOWN --}}
     <div class="relative">

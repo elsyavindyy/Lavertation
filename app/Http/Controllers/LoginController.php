@@ -7,34 +7,40 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    /**
+     * Menampilkan form login.
+     */
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole(Auth::user());
+        }
         return view('auth.login');
     }
 
     /**
-     * Menangani permintaan login (HANYA USERNAME)
+     * Menangani proses login.
      */
     public function login(Request $request)
     {
-        // 1. Validasi dikembalikan ke 'username'
         $credentials = $request->validate([
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
-        // 2. Coba otentikasi menggunakan 'username'
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return $this->redirectBasedOnRole(Auth::user());
         }
 
-        // 3. Jika gagal, kembalikan error ke field 'username'
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->onlyInput('username');
     }
 
+    /**
+     * Menangani proses logout.
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -42,5 +48,21 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    /**
+     * Helper function: Menentukan tujuan redirect.
+     */
+    protected function redirectBasedOnRole($user)
+    {
+        // HAPUS baris $role = ... karena kolom 'role' TIDAK ADA di databasemu.
+        // Langsung cek kolom 'is_admin'
+        
+        if ($user->is_admin == 1) {
+            return redirect()->route('admin.dashboard'); 
+        }
+
+        // Default ke dashboard user biasa (jika is_admin = 0)
+        return redirect()->route('dashboard');
     }
 }

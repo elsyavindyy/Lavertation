@@ -38,8 +38,65 @@
             <a href="{{ route('dashboard') }}" class="font-playfair text-3xl font-bold tracking-wider hover:text-blue-900 transition duration-300 cursor-pointer">
                 Lavertation
             </a>
+
+                <div class="relative flex items-center space-x-6">
+ 
+            {{-- START: WRAPPER UTAMA UNTUK ICON & USER --}}
+                <div class="relative flex items-center space-x-6">
+
             
-            <!-- Menu User -->
+           {{-- 1. HISTORY ICON (BARU) --}}
+                <a href="{{ route('booked-history.index') }}" class="text-gray-600 hover:text-[#273875] transition duration-300" title="Booking History">
+                    <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+                </a>
+ 
+    {{-- START: NOTIFICATION DROPDOWN --}}
+    <div class="relative">
+        <button id="notification-button" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+            <i class="fa-solid fa-bell text-2xl"></i>
+        </button>
+       
+        {{-- Dropdown Menu Notifikasi --}}
+        <div id="notification-menu" class="hidden absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-2xl py-2 z-50 ring-1 ring-black ring-opacity-5">
+           
+            {{-- HEADER NOTIFIKASI DENGAN TAB BERBENTUK PIL (Sesuai Figma) --}}
+            <div class="flex justify-between items-center px-4 py-2 border-b border-gray-100">
+                <div class="font-bold text-lg">Notifications</div>
+               
+                <div class="flex bg-gray-100 p-1 rounded-full space-x-1 text-sm">
+                    {{-- Tombol 'All' (Aktif secara default) --}}
+                    <button class="tab-button px-4 py-1 rounded-full font-medium transition duration-150 ease-in-out
+                                   bg-white text-gray-800 shadow" data-tab="all">
+                        All
+                    </button>
+                    {{-- Tombol 'Unread' --}}
+                    <button class="tab-button px-4 py-1 rounded-full font-medium transition duration-150 ease-in-out
+                                   text-gray-500 hover:bg-gray-200" data-tab="unread">
+                        Unread
+                    </button>
+                </div>
+            </div>
+ 
+            {{-- Notification Content --}}
+            <div id="notification-content">
+                {{-- KONTEN "ALL" (Visible secara default) --}}
+                <div class="text-center py-8 px-4 tab-content active" id="all-notifications">
+                    <img src="{{ asset('image/mailbox.png') }}" alt="No Notifications" class="mx-auto h-60 w-auto mb-4 opacity-70">
+                    <h5 class="font-semibold text-gray-700">No Notifications Yet</h5>
+                    <p class="text-sm text-gray-500">You don't have any notifications yet.</p>
+                </div>
+               
+                {{-- Konten "UNREAD" (Hidden secara default) --}}
+                <div class="text-center py-2     px-4 tab-content hidden" id="unread-notifications">
+                    <p class="text-sm text-gray-500">You're all caught up!</p>
+                </div>
+            </div>
+ 
+            {{-- Menambahkan kembali View All agar lengkap sesuai figma --}}
+        </div>
+    </div>
+    {{-- END: NOTIFICATION DROPDOWN --}}
+            
             <div class="relative">
                 <button id="user-menu-button" class="flex items-center space-x-3">
                     <i class="fa-solid fa-user-circle text-2xl text-gray-600"></i>
@@ -47,7 +104,14 @@
                     <i class="fa-solid fa-chevron-down text-xs text-gray-500 transition-transform duration-200" id="arrow-icon"></i>
                 </button>
                 <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
-                     {{-- Anda bisa menambahkan menu Profile/Settings di sini jika mau --}}
+                    
+                    <a href="{{ route('booked-history.index') }}" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        History
+                    </a>
+
+                    {{-- Garis Pemisah sebelum Logout --}}
+                    <div class="border-t border-gray-100 my-1"></div>
+                    
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
