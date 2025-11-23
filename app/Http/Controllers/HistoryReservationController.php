@@ -3,27 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reservation; // pastikan model sudah ada
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Auth;
 
 class HistoryReservationController extends Controller
 {
-    // Menampilkan daftar history reservation
     public function index()
     {
-        // ambil user yang login
         $user = Auth::user();
 
-        // ambil reservations yang sudah selesai
+        // PERBAIKAN:
+        // Saya menghapus ->where('status', 'completed')
+        // Agar status 'approved', 'pending', dan 'rejected' SEMUA MUNCUL.
+        
         $history = Reservation::where('user_id', $user->id)
-                              ->where('status', 'completed')
-                              ->orderBy('created_at', 'desc')
-                              ->get();
+                              ->latest() // Sama dengan orderBy('created_at', 'desc')
+                              ->get();   // Atau gunakan ->paginate(10) jika data banyak
 
+        // Pastikan view kamu namanya benar
         return view('history_reservations.index', compact('history'));
     }
 
-    // Menampilkan detail reservation tertentu
     public function show($id)
     {
         $user = Auth::user();
