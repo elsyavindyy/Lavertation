@@ -24,6 +24,11 @@ Ini tentunya menyelesaikan masalah dimana guru-guru yang membutuhkan lab perlu m
 <img src="images/login.png" alt="Dashboard" width="500">
 <img src="images/loginnama.png" alt="Dashboard" width="500">
 <img src="images/register.png" alt="Dashboard" width="500">
+<img src="images/HomaPage.png" alt="Dashboard" width="500">
+<img src="images/BookHistory.png" alt="Dashboard" width="500">
+<img src="images/ReservationFrom.png" alt="Dashboard" width="500">
+<img src="images/Admin.png" alt="Dashboard" width="500">
+
 
 
 ---
